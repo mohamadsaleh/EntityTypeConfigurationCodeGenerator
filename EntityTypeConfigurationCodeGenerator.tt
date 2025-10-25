@@ -13,16 +13,19 @@
         .ToList();
     foreach (var className in classesToGenerate)
     {
-        string fileName = $"{className}Manager.cs";
+        string fileName = $"{className}EntityTypeConfiguration.cs";
         string filePath = Path.Combine(templateDirectory, fileName);
-        string content = GenerateManagerClass(className);
-        File.WriteAllText(filePath, content, Encoding.UTF8);
+		if(!File.Exists(filePath))
+		{
+			string content = GenerateEntityTypeConfiguration(className);
+			File.WriteAllText(filePath, content, Encoding.UTF8);
+		}
     }
 #>
 Files generated successfully!
 
 <#+
-    private string GenerateManagerClass(string className)
+    private string GenerateEntityTypeConfiguration(string className)
     {
         return @"// Auto-generated code for "+className+@"
 		using Microsoft.EntityFrameworkCore;
